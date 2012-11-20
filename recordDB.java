@@ -32,6 +32,7 @@ public class recordDB {
       for (int i=0; i<Record.recordSize(); i++) {
         //System.out.println(Record.recordSize());
         String id = Record.getID(i).toString();
+        key = new DatabaseEntry();
         key.setData(id.getBytes());
         key.setSize(id.length());
         data.setData(Record.getTitle(i).getBytes());
@@ -46,21 +47,21 @@ public class recordDB {
           
           artists_DB.put(null, key, data);
           data = new DatabaseEntry();
-          }
-          
-          String[] user = Record.getUsers(i);
-          for (int j=0; j<user.length; j++) {
-          String pair = user[j].concat("|").concat(Record.getRating(i, user[j]).toString());
+        }
+        
+        String[] user = Record.getUsers(i);
+        for (int j=0; j<user.length; j++) {
+          String pair = user[j].concat(",").concat(Record.getRating(i, user[j]).toString());
           data.setData(pair.getBytes());
           data.setSize(pair.length());
           
           userrat_DB.put(null, key, data);
-        
+          
           data = new DatabaseEntry();
-          }
-          //title_DB.get(null, key, data, LockMode.DEFAULT);
-          //System.out.println(new String(key.getData()) + " " + new String(data.getData()));
-          key = new DatabaseEntry();
+        }
+        //title_DB.get(null, key, data, LockMode.DEFAULT);
+        //System.out.println(new String(key.getData()) + " " + new String(data.getData()));
+        key = new DatabaseEntry();
         
       }
     } catch (Exception e) {

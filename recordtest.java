@@ -24,7 +24,7 @@ public class recordtest {
     }
     System.out.println("");
   }
-
+/*
   public static void testDB() {
     try {
       Cursor tcur = recordDB.title_DB.openCursor(null, null);
@@ -35,28 +35,34 @@ public class recordtest {
       key = new DatabaseEntry();
       data = new DatabaseEntry();
       
-      for (Integer i=1; i<=Record.recordSize(); i++) {
-        key.setData(i.toString().getBytes());
-        key.setSize(i.toString().length());
-      while (tcur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-        System.out.print(new String(key.getData()) + " " + new String(data.getData()) + " ");
-      }
-      while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-        System.out.print(new String(data.getData()) + " ");
-      }
-      while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-        System.out.print(new String(data.getData()) + " ");
-      }
-      System.out.println("");
+      for (int i=0; i<Record.recordSize(); i++) {
+        String id = Record.getID(i).toString();
+        key.setData(id.getBytes());
+        key.setSize(id.length());
+        while (tcur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.println(new String(key.getData()) + " " + new String(data.getData()) + " ");
+          data = new DatabaseEntry();
+        }
+        while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.print(new String(data.getData()) + " ");
+          data = new DatabaseEntry();
+        }
+        while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.print(new String(data.getData()) + " ");
+          data = new DatabaseEntry();
+          }
+        //System.out.print("\n");
+        key = new DatabaseEntry();
       }
     } catch (Exception e) {
       e.getMessage();
     }
   }
-/*
+*/
   public static void testDB() {
     try {
-      Cursor tcur = recordDB.title_DB.openCursor(null, null);
+      Cursor acur = recordDB.artists_DB.openCursor(null, null);
+      Cursor ucur = recordDB.userrat_DB.openCursor(null, null);
       DatabaseEntry key, data;
       key = new DatabaseEntry();
       data = new DatabaseEntry();
@@ -68,8 +74,19 @@ public class recordtest {
           System.out.println(new String(key.getData()) + " " + new String(data.getData()));
           data = new DatabaseEntry();
         }
+        acur.getFirst(key, data, LockMode.DEFAULT);
+        System.out.println(new String(data.getData
+        while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.println(new String(data.getData()));
+          data = new DatabaseEntry();
+        }
+        while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.println(new String(data.getData()));
+          data = new DatabaseEntry();
+        }
       }
-      tcur.close();
+      acur.close();
+      ucur.close();
       recordDB.title_DB.close();
       recordDB.artists_DB.close();
       recordDB.userrat_DB.close();
@@ -77,5 +94,5 @@ public class recordtest {
       e.getMessage();
     }
   }
-*/
+
 }
