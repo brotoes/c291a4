@@ -15,7 +15,7 @@ public class recordDB {
       title_DB = new Database("title.db", null, dbConfig);
       dbConfig.setSortedDuplicates(true);
       artists_DB = new Database("artists.db", null, dbConfig);
-      dbConfig.setSortedDuplicates(false);
+      //dbConfig.setSortedDuplicates(false);
       userrat_DB = new Database("userrat.db", null, dbConfig);
       OperationStatus opStat;
 

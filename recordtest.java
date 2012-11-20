@@ -70,20 +70,21 @@ public class recordtest {
         String id = Record.getID(i).toString();
         key.setData(id.getBytes());
         key.setSize(id.length());
-        if (recordDB.title_DB.get(null, key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+        /* if (recordDB.title_DB.get(null, key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
           System.out.println(new String(key.getData()) + " " + new String(data.getData()));
           data = new DatabaseEntry();
-        }
+          }*/
         //acur.getFirst(key, data, LockMode.DEFAULT);
         //System.out.println(new String(data.getData
-        while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-          System.out.println(new String(data.getData()));
+        /*while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
+          System.out.println(new String(key.getData()) + " " + new String(data.getData()));
           data = new DatabaseEntry();
-        }
+          } */
         while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-          System.out.println(new String(data.getData()));
+          System.out.println(new String(key.getData()) + " " + new String(data.getData()));
           data = new DatabaseEntry();
-        }
+          key = new DatabaseEntry();
+          }
       }
       acur.close();
       ucur.close();
