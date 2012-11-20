@@ -74,8 +74,8 @@ public class recordtest {
           System.out.println(new String(key.getData()) + " " + new String(data.getData()));
           data = new DatabaseEntry();
         }
-        acur.getFirst(key, data, LockMode.DEFAULT);
-        System.out.println(new String(data.getData
+        //acur.getFirst(key, data, LockMode.DEFAULT);
+        //System.out.println(new String(data.getData
         while (acur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
           System.out.println(new String(data.getData()));
           data = new DatabaseEntry();
