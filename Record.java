@@ -22,6 +22,10 @@ public class Record {
   public static void initRecord() {
     Record.record = new ArrayList<Record>();
   }
+
+  public static void initQueries() {
+    queries = new ArrayList<String>();
+  }
   
     public static void newRecord() {
       record.add(new Record(-1, "null", new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>()));
@@ -84,5 +88,8 @@ public class Record {
     public static void addQuery(String query) {
       queries.add(query);
     }
-    public static String[] getQueries() {return queries.toArray(new String());}
+    public static String getQuery(int i) {
+      return queries.get(i);
+    }
+    public static int numQuery() {return queries.size();}
 }

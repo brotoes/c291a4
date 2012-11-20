@@ -37,6 +37,12 @@ public class parse {
     if (args.length == 2)
       if (args[1].equals("-p"))
         recordtest.testDB();
+    Record.initQueries();
+    loadQueries();
+    if (args.length == 2)
+      if (args[1].equals("-q"))
+        recordtest.testQ();
+    
     sc.close();
     } catch (FileNotFoundException e) {
       System.err.print("FileNotFoundException: ");
@@ -135,8 +141,9 @@ public class parse {
       File file = new File("queries.txt");
       Scanner sc = new Scanner(file);
       while (sc.hasNextLine()) {
-        addQuery(sc.nextLine());
+        Record.addQuery(sc.nextLine());
       }
+      sc.close();
     } catch (FileNotFoundException fe) {
       fe.getMessage();
     }

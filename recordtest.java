@@ -95,5 +95,9 @@ public class recordtest {
       e.getMessage();
     }
   }
-
+  public static void testQ() {
+    for (int i=0; i<Record.numQuery(); i++) 
+      System.out.println(Record.getQuery(i));
+    
+  }
 }
