@@ -2,8 +2,9 @@ import java.util.*;
 
 public class Record {
   private static List<Record> record;
-
-    private int iden;
+  private static List<String> queries;
+  
+  private int iden;
   private String ttl;
   private List<String> art;
   private List<String> us;
@@ -80,4 +81,8 @@ public class Record {
     }
     public static Record getRecord(int i) { return record.get(i);}
     public static int recordSize() {return record.size();}
+    public static void addQuery(String query) {
+      queries.add(query);
+    }
+    public static String[] getQueries() {return queries.toArray(new String());}
 }

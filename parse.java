@@ -34,7 +34,9 @@ public class parse {
       //recordDB.userrat_DB.close();
     }
     recordDB.configDB();
-    recordtest.testDB();
+    if (args.length == 2)
+      if (args[1].equals("-p"))
+        recordtest.testDB();
     sc.close();
     } catch (FileNotFoundException e) {
       System.err.print("FileNotFoundException: ");
@@ -126,6 +128,17 @@ public class parse {
       System.out.println("There is a file format problem, expected '[' but got '" +
                          input.charAt(0) + "' on line " + i);
       noproblem = false;
+    }
+  }
+  private static void loadQueries() {
+    try {
+      File file = new File("queries.txt");
+      Scanner sc = new Scanner(file);
+      while (sc.hasNextLine()) {
+        addQuery(sc.nextLine());
+      }
+    } catch (FileNotFoundException fe) {
+      fe.getMessage();
     }
   }
 }
