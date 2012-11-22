@@ -7,33 +7,44 @@ import java.util.regex.Matcher;
 public class SongDatabase {
     public static Database primDB;
     public static Database secDB;
-/*
+
+//Compile with SongDatabase.java Entry.java after uncommenting
+//this main function to run tests
+    /*
     public static void main(String[] args) {
         init();
         ArrayList<String> userList = new ArrayList<String>();
         ArrayList<Integer> ratingList = new ArrayList<Integer>();        
 
         userList.add("foo");
-        userList.add("bar"):
+        userList.add("bar");
         
         ratingList.add(new Integer(5));
         ratingList.add(new Integer(4));
 
         putRow(10, userList, ratingList);
-    }
-*/
+        
+        ArrayList<Entry> entries = getEntry("foo");
+        
+        for (int i = 0; i < entries.size(); i ++)
+            System.out.println(entries.get(i).songID);
+
+        Entry entry = getEntry(10);
+        System.out.println(entry.user.get(0));
+    }*/
+
     public static void init() {
         try {
-        //Create primary database
-        DatabaseConfig dbConfig = new DatabaseConfig();
-        dbConfig.setType(DatabaseType.BTREE);
-        dbConfig.setAllowCreate(true);
-        //dbConfig.setSortedDuplicates(true);
-       
-        primDB = new Database("song.db", null, dbConfig);
-        secDB = new Database("secSong.db", null, dbConfig);
+            //Create primary database
+            DatabaseConfig dbConfig = new DatabaseConfig();
+            dbConfig.setType(DatabaseType.BTREE);
+            dbConfig.setAllowCreate(true);
+            //dbConfig.setSortedDuplicates(true);
+           
+            primDB = new Database("song.db", null, dbConfig);
+            secDB = new Database("secSong.db", null, dbConfig);
         } catch (Exception e) {
-            e.getMessage();
+            System.err.println("Error in init: " + e.getMessage());
         }
     }
 
@@ -99,7 +110,7 @@ public class SongDatabase {
                 }
             }
         } catch (Exception e) {
-            e.getMessage();
+            System.err.println("Error in putRow(): " + e.getMessage());
         }
     }
     public static ArrayList<Entry> getEntry(String user) {
@@ -142,9 +153,21 @@ public class SongDatabase {
             DatabaseEntry key = new DatabaseEntry();
             DatabaseEntry data = new DatabaseEntry();
 
+            /*
+            DatabaseEntry testKey = new DatabaseEntry();
+            DatabaseEntry testData = new DatabaseEntry();
+
+            System.out.println("before cursors");
+            Cursor cursor = primDB.openCursor(null, null);
+            System.out.println("After cursor opening");
+            cursor.getNext(testKey, testData, LockMode.DEFAULT);
+            System.out.println("key/data: " + new String(testKey.getData())
+                    + " " + new String(testData.getData()));
+            */
+
             key.setData(idWrapped.toString().getBytes());
             key.setSize(idWrapped.toString().length());
-
+            
             primDB.get(null, key, data, LockMode.DEFAULT);
 
             String dataString = new String(data.getData());
@@ -168,8 +191,9 @@ public class SongDatabase {
             returnEntry.user = user;
             returnEntry.rating = userRating;
         } catch (Exception e) {
-            e.getMessage();
+            System.err.println("Error in getEntry(): " + e.getMessage());
         }
+
         return returnEntry;
     }
 }

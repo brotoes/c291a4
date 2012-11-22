@@ -1,5 +1,5 @@
 all:
-	javac *.java
+	javac -Xlint *.java
 
 db:
 	javac -Xlint SongDatabase.java Entry.java
@@ -12,3 +12,5 @@ config:
 	export CLASSPATH
 	LD_LIBRARY_PATH=/oracle/lib
 	export LD_LIBRARY_PATH
+
+.PHONY: config all db clean
