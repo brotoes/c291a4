@@ -135,7 +135,7 @@ public class SongDatabase {
                 returnEntries.add(getEntry(Integer.parseInt(matcher.group())));
             }
         } catch (Exception e) {
-            e.getMessage();
+            System.err.println("Error in getEntry(String):" + e.getMessage());
         }
         return returnEntries;
     }
@@ -191,7 +191,7 @@ public class SongDatabase {
             returnEntry.user = user;
             returnEntry.rating = userRating;
         } catch (Exception e) {
-            System.err.println("Error in getEntry(): " + e.getMessage());
+            System.err.println("Error in getEntry(int): " + e.getMessage());
         }
 
         return returnEntry;
