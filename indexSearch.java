@@ -13,7 +13,7 @@ public class indexSearch {
     for (int i=0; i<Record.numQueries(); i++) {
       timer.startIndTimer();
       int id = Integer.parseInt(Record.getQuery(i));
-      List<String> IDs = new ArrayList<String>();
+      List<Entry> allEntries = new ArrayList<Entry>();
       
       Entry entry = SongDatabase.getEntry(id);
       List<Entry> aentry = new ArrayList<Entry>();
@@ -21,14 +21,14 @@ public class indexSearch {
       for (int j=0; j<entry.user.size(); j++) {
         aentry = SongDatabase.getEntry(entry.user.get(j));
         for (int k=0; k<aentry.size(); k++) {
-          if (!IDs.contains(aentry.get(k).id) && !aentry.get(k).id == id)
-            IDs.add(aentry.get(k).id);
+          if (!allEntries.contains(aentry.get(k)) && aentry.get(k).id != id)
+            allEntries.add(aentry.get(k).id);
         }
       }
       
       for (int j=0; j<IDs.size(); j++) {
         double score = -1.0;
-        score = linSearch.compareEntry(entry, SongDatabase.getEntry(IDs.get(j)));
+        score = linSearch.compareEntry(entry, allEntries.get(j)));
 
         int itemp, itemp1;
         double dtemp, dtemp1;
