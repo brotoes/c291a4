@@ -95,6 +95,7 @@ public class Record {
     public static void populateDatabase() {
       for (int i=0; i<record.size(); i++) {
         int id = record.get(i).iden;
+        System.out.println(id + " " + record.get(i).us.get(0) + " " + record.get(i).rat.get(0));
         SongDatabase.putRow(id, record.get(i).us, record.get(i).rat);
       }
     }
