@@ -7,7 +7,21 @@ import java.util.regex.Matcher;
 public class SongDatabase {
     public static Database primDB;
     public static Database secDB;
+/*
+    public static void main(String[] args) {
+        init();
+        ArrayList<String> userList = new ArrayList<String>();
+        ArrayList<Integer> ratingList = new ArrayList<Integer>();        
 
+        userList.add("foo");
+        userList.add("bar"):
+        
+        ratingList.add(new Integer(5));
+        ratingList.add(new Integer(4));
+
+        putRow(10, userList, ratingList);
+    }
+*/
     public static void init() {
         try {
         //Create primary database
@@ -21,6 +35,19 @@ public class SongDatabase {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    //overloaded function to allow unparsed data entry
+    public static void putRow(int songID, ArrayList<String> user,
+                            ArrayList<Integer> rating) {
+        String parsedSongID = new Integer(songID).toString();
+        ArrayList<String> parsedRating = new ArrayList<String>();        
+
+        for (int i = 0; i < rating.size(); i ++) {
+            parsedRating.add(rating.get(i).toString());
+        }
+
+        putRow(parsedSongID, user, parsedRating);
     }
 
     //Enter a row of data, if song already exists, will enter new user
