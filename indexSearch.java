@@ -49,7 +49,7 @@ public class indexSearch {
             }
           }
         }
-        
+        timer.stopIndTimer();
       }
       System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
       try {

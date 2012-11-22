@@ -34,6 +34,7 @@ public class parse {
       //    recordDB.artists_DB.close();
       //recordDB.userrat_DB.close();
     }
+    SongDatabase.init();
     Record.populateDatabase();
     System.out.println("Done, database populated");
     //if (args.length == 2)

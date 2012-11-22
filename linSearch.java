@@ -12,13 +12,15 @@ public class linSearch {
     int id = -1;
     
     for (int i=0; i<Record.numQuery(); i++) {
+      //System.out.println("marker");
       timer.startLinTimer();
       
       id = Integer.parseInt(Record.getQuery(i));
       Entry init = SongDatabase.getEntry(id);
       
-      for (Integer j=1; j<=Record.recordSize(); j++) {
+      for (int j=1; j<=Record.recordSize(); j++) {
         Entry comp = SongDatabase.getEntry(j);
+        //System.out.println(init.user.get(0));
         double score = -1.0;
         if (init.songID != comp.songID) 
           score = compareEntry(init, comp);
@@ -59,6 +61,7 @@ public class linSearch {
     int iresult = 0;
     double dresult = -1.0;
     int count = 0;
+    //System.out.println(entry1.user.get(0) + " " + entry2.user.get(0));
     for (int i=0; i<entry1.user.size(); i++) {
       int indx;
       if ((indx = entry2.user.indexOf(entry1.user.get(i))) != -1) {

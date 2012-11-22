@@ -56,7 +56,7 @@ public class timer {
     } else {
       indmax = indstoptim-indsrttim;
     }
-    lintimes.add(indstoptim-indsrttim);
+    indtimes.add(indstoptim-indsrttim);
   }
   public static Long[] getTimeData() {
     long sum = 0;
