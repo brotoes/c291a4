@@ -5,11 +5,19 @@ public class SongDatabase {
     public static Database primDB;
     public static Database secDB;
 
-    public static int main() {
-        return 0;
+    public static void main(String[] args) {
+        init();
+        ArrayList<String> user = new ArrayList<String>();
+        ArrayList<String> rating = new ArrayList<String>();
+        user.add("bob");
+        user.add("alice");
+        rating.add("5");
+        rating.add("7");
+        putRow("Hello", user, rating);
     }
 
     public static void init() {
+        try {
         //Create primary database
         DatabaseConfig dbConfig = new DatabaseConfig();
         dbConfig.setType(DatabaseType.BTREE);
@@ -18,6 +26,9 @@ public class SongDatabase {
        
         primDB = new Database("song.db", null, dbConfig);
         secDB = new Database("secSong.db", null, dbConfig);
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
     //Enter a row of data, if song already exists, will enter new user
@@ -47,6 +58,9 @@ public class SongDatabase {
                 data.setSize(dataString.length());
 
                 primDB.put(null, key, data);
+                primCur.getFirst(key,data, LockMode.DEFAULT);
+                System.out.print("Entry:");
+                System.out.println(new String(data.getData())+"|");
             }
             primCur.close();
             secCur.close();
@@ -54,12 +68,12 @@ public class SongDatabase {
             e.getMessage();
         }
     }
-    public static Entry getEntry(String user) {
-        Entry returnEntry = new Entry();
-        return returnEntry;
-    }
+    //public static ArrayList<Entry> getEntry(String user) {
+    //    Entry returnEntry = new Entry();
+    //    return returnEntry;
+    //}
     public static Entry getEntry(int songID) {
-        Entry.Entry returnEntry = new Entry();
+        Entry returnEntry = new Entry();
         return returnEntry;
     }
 }
@@ -69,10 +83,4 @@ public class SongDatabase {
 //    public ArrayList<String> user = new ArrayList<String>();
 //    public ArrayList<Integer> rating = new ArrayList<String>();
 //
-//    public Entry(int newSongID, String newUser, int newRating) {
-//        songID = newSongID;
-//        user.add(newUser);
-//        Integer integer = new Integer(newRating);
-//        rating.add(integer);
-//    }
 //}

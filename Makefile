@@ -1,6 +1,9 @@
 all:
 	javac *.java
 
+db:
+	javac -Xlint SongDatabase.java Entry.java
+
 clean:
 	rm *.db *.class
 
