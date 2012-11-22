@@ -24,9 +24,6 @@ public class recordDB {
             e.getMessage();
         }
     }
-    public static void configIndDB() {
-        
-    }
     private static void populateDB() {
         try {
             DatabaseEntry key, data;

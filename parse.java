@@ -29,8 +29,8 @@ public class parse {
         if (args[1].equals("-d"))
           recordtest.test(i);
       //recordtest.testDB();
-//      recordDB.title_DB.close();
-      //    recordDB.artists_DB.close();
+      //recordDB.title_DB.close();
+      //recordDB.artists_DB.close();
       //recordDB.userrat_DB.close();
     }
     recordDB.configDB();
