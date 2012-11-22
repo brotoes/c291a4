@@ -2,27 +2,26 @@ import java.util.*;
 import com.sleepycat.db.*;
 
 public class recordDB {
-    public static Database title_DB;
-    public static Database artists_DB;
-    public static Database userrat_DB;
-    
-    public static void configDB() {
-        try {
-            DatabaseConfig dbConfig = new DatabaseConfig();
-            dbConfig.setType(DatabaseType.BTREE);
-            //dbConfig.setSortedDuplicates(true);
-            dbConfig.setAllowCreate(true);
-            title_DB = new Database("title.db", null, dbConfig);
-            dbConfig.setSortedDuplicates(true);
-            artists_DB = new Database("artists.db", null, dbConfig);
-            //dbConfig.setSortedDuplicates(false);
-            userrat_DB = new Database("userrat.db", null, dbConfig);
-            OperationStatus opStat;
+  public static Database title_DB;
+  public static Database artists_DB;
+  public static Database userrat_DB;
+  
+  public static void configDB() {
+    try {
+      DatabaseConfig dbConfig = new DatabaseConfig();
+      dbConfig.setType(DatabaseType.BTREE);
+      //dbConfig.setSortedDuplicates(true);
+      dbConfig.setAllowCreate(true);
+      title_DB = new Database("title.db", null, dbConfig);
+      dbConfig.setSortedDuplicates(true);
+      artists_DB = new Database("artists.db", null, dbConfig);
+      dbConfig.setSortedDuplicates(false);
+      userrat_DB = new Database("userrat.db", null, dbConfig);
+      OperationStatus opStat;
 
-            populateDB();
-        } catch (Exception e) {
-            e.getMessage();
-        }
+      populateDB();
+    } catch (Exception e) {
+      e.getMessage();
     }
     private static void populateDB() {
         try {
@@ -67,5 +66,22 @@ public class recordDB {
         } catch (Exception e) {
             e.getMessage();
         }
+        userratlist = userratlist.concat("]");
+        //System.out.println(userratlist);
+        data.setData(userratlist.getBytes());
+        data.setSize(userratlist.length());
+        
+        userrat_DB.put(null, key, data);
+        
+        data = new DatabaseEntry();
+      
+        //title_DB.get(null, key, data, LockMode.DEFAULT);
+        //System.out.println(new String(key.getData()) + " " + new String(data.getData()));
+        key = new DatabaseEntry();
+        
+      }
+    } catch (Exception e) {
+      e.getMessage();
     }
+  }
 }

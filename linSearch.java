@@ -23,11 +23,18 @@ public class linSearch {
         //ucur.getFirst(key, data, null);
         
         while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-          IDs.add(new String(key.getData()));
           String output = new String(data.getData());
-          int indx = output.indexOf(",");
-          Users.add(output.substring(0, indx));
-          Ratings.add(Integer.parseInt(output.substring(indx+1)));
+          //System.out.println(output);
+          while (output.charAt(0) == '|' && output.charAt(1) != ']') {
+            IDs.add(new String(key.getData()));
+            output = output.substring(1);
+            int cindx = output.indexOf(",");
+            int bindx = output.indexOf("|");
+            Users.add(output.substring(0, cindx));
+            Ratings.add(Integer.parseInt(output.substring(cindx+1, bindx)));
+            output = output.substring(bindx);
+            System.out.println(output);
+          }
           key = new DatabaseEntry();
           data = new DatabaseEntry();
         } //database retriever loop end
@@ -36,13 +43,15 @@ public class linSearch {
 
         String cid = IDs.get(0);
         int k;
+        int iresult = 0;
         System.out.println(cid);
         for (int j=IDs.indexOf(id); j<=IDs.lastIndexOf(id); j++) {
           for (k=IDs.indexOf(cid); k<=IDs.lastIndexOf(cid); k++) {
             
+            
           }
           cid = IDs.get(k);
-          System.out.println(cid);
+          //System.out.println(cid);
         }
         IDs.clear();
         Users.clear();
