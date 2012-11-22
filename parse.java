@@ -19,30 +19,40 @@ public class parse {
     Scanner sc = new Scanner(nfile);
     Record.initRecord(); 
     //System.out.println(input);
+    System.out.println("Parsing... ");
     for (int i=0; sc.hasNextLine(); i++) {
       Record.newRecord();
       input = sc.nextLine();
       //System.out.println(input);
       parseRecord(i, input);
       
-      if (args.length == 2) 
-        if (args[1].equals("-d"))
-          recordtest.test(i);
+      //if (args.length == 2) 
+      //if (args[1].equals("-d"))
+      //  recordtest.test(i);
       //recordtest.testDB();
-      //recordDB.title_DB.close();
-      //recordDB.artists_DB.close();
+//      recordDB.title_DB.close();
+      //    recordDB.artists_DB.close();
       //recordDB.userrat_DB.close();
     }
-    recordDB.configDB();
-    if (args.length == 2)
-      if (args[1].equals("-p"))
-        recordtest.testDB();
+    Record.populateDatabase();
+    System.out.println("Done, database populated");
+    //if (args.length == 2)
+    //if (args[1].equals("-p"))
+    //  recordtest.testDB();
     Record.initQueries();
     loadQueries();
-    if (args.length == 2)
-      if (args[1].equals("-q"))
-        recordtest.testQ();
-    
+    //if (args.length == 2)
+    //if (args[1].equals("-q"))
+    //  recordtest.testQ();
+    //linSearch.linSearch();
+    //Record record = new Record(1, new String(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>());
+    /*
+    long[] times = getTimeData();
+    System.out.println("The min linear time was " + times[0] + " the max was " + times[1] +
+                       " The average was " + times[2]);
+    System.out.println("The min index time was " + times[3] + " The max was " + times[4] +
+                       " The average was " + times[5]);
+    */
     sc.close();
     } catch (FileNotFoundException e) {
       System.err.print("FileNotFoundException: ");

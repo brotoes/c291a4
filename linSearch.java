@@ -1,64 +1,74 @@
 import java.util.*;
-import java.io.*;
-import com.sleepycat.db.*;
+import java.io.*
 
 public class linSearch {
   public static void linSearch() {
-    try {
-      List<String> Users = new ArrayList<String>();
-      List<Integer> Ratings = new ArrayList<Integer>();
-      List<String> IDs = new ArrayList<String>();
+    int bid = 0;
+    int sid = 0;
+    int tid = 0;
+    double bids = 9999;
+    double sids = 9999;
+    double tids = 9999;
+    String id = "-1";
+    
+    for (int i=0; i<numQueries(); i++) {
+      timer.startLinTimer();
+      
+      id = Record.getQuery(i);
+      Entry init = getEntry(id);
+      
+      for (Integer j=1; j<=Record.recordSize(); j++) {
+        Entry comp = getEntry(j.toString());
+        double score = -1.0;
+        if (init.id != comp.id) 
+          score = compareEntry(init, comp);
+        int itemp, itemp1;
+        double dtemp, dtemp1;
 
-      double fbest = 9999;
-      double sbest = 9999;
-      double tbest = 9999;
-
-      Cursor ucur = recordDB.userrat_DB.openCursor(null, null);
-
-      for (int i=0; i<Record.numQuery(); i++) {
-        String id = Record.getQuery(i);
-        
-        DatabaseEntry key = new DatabaseEntry();
-        DatabaseEntry data = new DatabaseEntry();
-        //ucur.getFirst(key, data, null);
-        
-        while (ucur.getNext(key, data, LockMode.DEFAULT) == OperationStatus.SUCCESS) {
-          String output = new String(data.getData());
-          //System.out.println(output);
-          while (output.charAt(0) == '|' && output.charAt(1) != ']') {
-            IDs.add(new String(key.getData()));
-            output = output.substring(1);
-            int cindx = output.indexOf(",");
-            int bindx = output.indexOf("|");
-            Users.add(output.substring(0, cindx));
-            Ratings.add(Integer.parseInt(output.substring(cindx+1, bindx)));
-            output = output.substring(bindx);
-            System.out.println(output);
+        if (score < bids) {
+          dtemp = bids;
+          itemp = bid;
+          bids = score;
+          bid = j;
+          if (dtemp < sids) {
+            dtemp1 = dtemp;
+            itemp1 = itemp;
+            sids = dtemp;
+            sid = itemp;
+            if (dtemp1 < tids) {
+              tids = dtemp1;
+              tid = itemp1;
+            }
           }
-          key = new DatabaseEntry();
-          data = new DatabaseEntry();
-        } //database retriever loop end
-        //for (int t=0; t<IDs.size(); t++) 
-        //System.out.println(IDs.get(t) + " " + Users.get(t) + " " + Ratings.get(t));
-
-        String cid = IDs.get(0);
-        int k;
-        int iresult = 0;
-        System.out.println(cid);
-        for (int j=IDs.indexOf(id); j<=IDs.lastIndexOf(id); j++) {
-          for (k=IDs.indexOf(cid); k<=IDs.lastIndexOf(cid); k++) {
-            
-            
-          }
-          cid = IDs.get(k);
-          //System.out.println(cid);
-        }
-        IDs.clear();
-        Users.clear();
-        Ratings.clear();
-      } //Query loop end
-    } catch (Exception e) {
-      e.getMessage();
+        }  
+      }
+      System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
+      try {
+        FileWriter fwrite = new FileWriter("linearanswers.txt");
+        BufferedWriter writer = new BufferedWriter(fwrite);
+        writer.write(id + " " + bid + " " + sid + " " + tid);
+      } catch (Exception e) {
+        e.getMessage();
+      }
     }
+    
+    timer.stopLinTimer();
+  }
+  
+  public static double compareEntry(Entry entry1, Entry entry2) {
+    int iresult = 0;
+    double dresult = -1.0;
+    int count = 0;
+    for (int i=0; i<entry1.user.size(); i++) {
+      int indx;
+      if (indx = entry2.indexOf(entry1.user.get(i)) != -1) {
+        int a = entry1.rating.get(i) - entry2.rating.get(indx);
+        iresult = iresult + a*a;
+        count++;
+      }
+    }
+    dresult = Math.sqrt(iresult);
+    dresult = dresult/count;
+    return dresult;
   }
 }
