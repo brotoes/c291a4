@@ -83,7 +83,6 @@ public class SongDatabase {
             key.setData(new String("alice").getBytes());
             key.setSize(new String("alice").length());
             secDB.get(null, key, data, LockMode.DEFAULT);
-            System.out.println(new String(data.getData()));
         } catch (Exception e) {
             e.getMessage();
         }
