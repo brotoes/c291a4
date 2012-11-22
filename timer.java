@@ -1,24 +1,27 @@
 import java.util.*;
 
 public class timer {
-  private long linsrttim = 0;
-  private long linstoptim = 0;
-  private long indsrttim = 0;
-  private long indstoptim = 0;
-  private List<Long> lintimes = new ArrayList<Long>();
-  private List<Long> indtimes = new ArrayList<Long>();
-  private long linmin;
-  private long linmax;
-  private long linavg;
-  private long indmin;
-  private long indmax;
-  private long indavg;
+  private static Long linsrttim = new Long(0);
+  private static Long linstoptim = new Long(0);
+  private static Long indsrttim = new Long(0);
+  private static Long indstoptim = new Long(0);
+  private static List<Long> lintimes = new ArrayList<Long>();
+  private static List<Long> indtimes = new ArrayList<Long>();
+  private static Long linmin;
+  private static Long linmax;
+  private static Long linavg;
+  private static Long indmin;
+  private static Long indmax;
+  private static Long indavg;
+  
   
   public static void startLinTimer() {
-    linsrttim = Date.getTime();
+    Date date = new Date();
+    linsrttim = date.getTime();
   }
   public static void stopLinTimer() {
-    linstoptim = Date.getTime();
+    Date date = new Date();
+    linstoptim = date.getTime();
     if (linmin != null) {
       if ((linstoptim-linsrttim) < linmin)
         linmin = linstoptim-linsrttim;
@@ -26,7 +29,7 @@ public class timer {
       linmin = linstoptim-linsrttim;
     }
     if (linmax != null) {
-      if ((linstoptim-linsrttim) > max)
+      if ((linstoptim-linsrttim) > linmax)
         linmax = linstoptim-linsrttim;
     } else {
       linmax = linstoptim-linsrttim;
@@ -35,10 +38,12 @@ public class timer {
   }
   
   public static void startIndTimer() {
-    indsrttim = Date.getTime();
+    Date date = new Date();
+    indsrttim = date.getTime();
   }
   public static void stopIndTimer() {
-    indstoptim = Date.getTime();
+    Date date = new Date();
+    indstoptim = date.getTime();
     if (indmin != null) {
       if ((indstoptim-indsrttim) < indmin)
         indmin = indstoptim-indsrttim;
@@ -53,8 +58,9 @@ public class timer {
     }
     lintimes.add(indstoptim-indsrttim);
   }
-  public static long[] getTimeData() {
+  public static Long[] getTimeData() {
     long sum = 0;
+    Long[] tdata = new Long[6];
     for (int i=0; i<lintimes.size(); i++) 
       sum = sum + lintimes.get(i);
     tdata[2] = sum/lintimes.size();
@@ -63,7 +69,6 @@ public class timer {
       sum = sum + indtimes.get(i);
     tdata[5] = sum/indtimes.size();
     
-    long[] tdata = new long[6];
     tdata[0] = linmin;
     tdata[1] = linmax;
     tdata[3] = indmin;

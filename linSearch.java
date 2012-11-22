@@ -1,5 +1,5 @@
 import java.util.*;
-import java.io.*
+import java.io.*;
 
 public class linSearch {
   public static void linSearch() {
@@ -9,18 +9,18 @@ public class linSearch {
     double bids = 9999;
     double sids = 9999;
     double tids = 9999;
-    int id = "-1";
+    int id = -1;
     
-    for (int i=0; i<numQueries(); i++) {
+    for (int i=0; i<Record.numQuery(); i++) {
       timer.startLinTimer();
       
       id = Integer.parseInt(Record.getQuery(i));
-      Entry init = getEntry(id);
+      Entry init = SongDatabase.getEntry(id);
       
       for (Integer j=1; j<=Record.recordSize(); j++) {
-        Entry comp = getEntry(j);
+        Entry comp = SongDatabase.getEntry(j);
         double score = -1.0;
-        if (init.id != comp.id) 
+        if (init.songID != comp.songID) 
           score = compareEntry(init, comp);
         int itemp, itemp1;
         double dtemp, dtemp1;
@@ -61,7 +61,7 @@ public class linSearch {
     int count = 0;
     for (int i=0; i<entry1.user.size(); i++) {
       int indx;
-      if (indx = entry2.indexOf(entry1.user.get(i)) != -1) {
+      if ((indx = entry2.user.indexOf(entry1.user.get(i))) != -1) {
         int a = entry1.rating.get(i) - entry2.rating.get(indx);
         iresult = iresult + a*a;
         count++;

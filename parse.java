@@ -34,7 +34,6 @@ public class parse {
       //    recordDB.artists_DB.close();
       //recordDB.userrat_DB.close();
     }
-    SongDatabase.init();
     Record.populateDatabase();
     System.out.println("Done, database populated");
     //if (args.length == 2)
@@ -42,19 +41,19 @@ public class parse {
     //  recordtest.testDB();
     Record.initQueries();
     loadQueries();
+    System.out.println("queries loaded");
     //if (args.length == 2)
     //if (args[1].equals("-q"))
     //  recordtest.testQ();
     //linSearch.linSearch();
     //Record record = new Record(1, new String(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>());
-    linSearch.linSearch();
-    indexSearch.indSearch();
+    /*
     long[] times = getTimeData();
     System.out.println("The min linear time was " + times[0] + " the max was " + times[1] +
                        " The average was " + times[2]);
     System.out.println("The min index time was " + times[3] + " The max was " + times[4] +
                        " The average was " + times[5]);
-    
+    */
     sc.close();
     } catch (FileNotFoundException e) {
       System.err.print("FileNotFoundException: ");

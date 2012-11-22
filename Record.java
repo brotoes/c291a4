@@ -6,12 +6,12 @@ public class Record {
   
   private Integer iden;
   private String ttl;
-  private List<String> art;
-  private List<String> us;
-  private List<Integer> rat;
+  private ArrayList<String> art;
+  private ArrayList<String> us;
+  private ArrayList<Integer> rat;
 
-    private Record(Integer i, String t, List <String> a, List <String> u,
-                   List <Integer> r) {
+    private Record(Integer i, String t, ArrayList <String> a, ArrayList <String> u,
+                   ArrayList <Integer> r) {
 	iden = i;
 	ttl = t;
 	art = a;
@@ -93,7 +93,9 @@ public class Record {
     }
     public static int numQuery() {return queries.size();}
     public static void populateDatabase() {
-      for (int i=0; i<record.size(); i++) 
-        SongDatabase.putRow(record.get(i).iden.toString(), record.get(i).us, record.get(i).rat);
+      for (int i=0; i<record.size(); i++) {
+        int id = record.get(i).iden;
+        SongDatabase.putRow(id, record.get(i).us, record.get(i).rat);
+      }
     }
 }
