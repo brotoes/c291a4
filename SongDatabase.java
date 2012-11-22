@@ -14,6 +14,7 @@ public class SongDatabase {
         rating.add("5");
         rating.add("7");
         putRow("Hello", user, rating);
+        putRow("OtherSong", user, rating);
     }
 
     public static void init() {
@@ -36,42 +37,61 @@ public class SongDatabase {
     public static void putRow(String songID, ArrayList<String> user, 
                             ArrayList<String> rating) {
         try {
-            Cursor primCur = primDB.openCursor(null, null);
-            Cursor secCur = secDB.openCursor(null, null);
             DatabaseEntry key = new DatabaseEntry();
             DatabaseEntry data = new DatabaseEntry();
 
             key.setData(songID.getBytes());
             key.setSize(songID.length());
 
-            //check if songID does not exist
-            if (primCur.getNext(key, data, LockMode.DEFAULT) == 
-                                    OperationStatus.NOTFOUND) {            
+            String dataString = new String();
 
-                String dataString = new String();
-
-                for (int i = 0; i < user.size(); i ++ ) {
-                    dataString.concat("(" + user.get(i) + "," + rating.get(i) + ")");
-                }
-
-                data.setData(dataString.getBytes());
-                data.setSize(dataString.length());
-
-                primDB.put(null, key, data);
-                primCur.getFirst(key,data, LockMode.DEFAULT);
-                System.out.print("Entry:");
-                System.out.println(new String(data.getData())+"|");
+            for (int i = 0; i < user.size(); i ++ ) {
+                dataString = dataString.concat(
+                    "(" + user.get(i) + "," + rating.get(i) + ")");
             }
-            primCur.close();
-            secCur.close();
+            
+            data.setData(dataString.getBytes());
+            data.setSize(dataString.length());
+
+            primDB.put(null, key, data);
+            
+            //entry into secondary database
+            for (int i = 0; i < user.size(); i ++) {
+                //Clear Data
+                data = new DatabaseEntry();
+                //Check if user has already rated other songs
+                key.setData(user.get(i).getBytes());
+                key.setSize(user.get(i).length());
+
+                if (secDB.get(null, key, data, LockMode.DEFAULT) == 
+                                OperationStatus.SUCCESS) {
+                    //append songid to old data
+                    String line = new String(data.getData()).concat("," +
+                                        songID);
+                    data.setData(line.getBytes());
+                    data.setSize(line.length());
+                    //put entry into DB
+                    secDB.put(null, key, data);
+                } else {
+                    //Make new data entry
+                    data.setData(songID.getBytes());
+                    data.setSize(songID.length());
+                    //put entry into DB
+                    secDB.put(null, key, data);
+                }
+            }
+            key.setData(new String("alice").getBytes());
+            key.setSize(new String("alice").length());
+            secDB.get(null, key, data, LockMode.DEFAULT);
+            System.out.println(new String(data.getData()));
         } catch (Exception e) {
             e.getMessage();
         }
     }
-    //public static ArrayList<Entry> getEntry(String user) {
-    //    Entry returnEntry = new Entry();
-    //    return returnEntry;
-    //}
+    public static ArrayList<Entry> getEntry(String user) {
+        ArrayList<Entry> returnEntries = new ArrayList<Entry>();
+        return returnEntries;
+    }
     public static Entry getEntry(int songID) {
         Entry returnEntry = new Entry();
         return returnEntry;
