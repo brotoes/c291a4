@@ -1,21 +1,12 @@
 import java.util.*;
 import com.sleepycat.db.*;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class SongDatabase {
     public static Database primDB;
     public static Database secDB;
-
-    public static void main(String[] args) {
-        init();
-        ArrayList<String> user = new ArrayList<String>();
-        ArrayList<String> rating = new ArrayList<String>();
-        user.add("bob");
-        user.add("alice");
-        rating.add("5");
-        rating.add("7");
-        putRow("Hello", user, rating);
-        putRow("OtherSong", user, rating);
-    }
 
     public static void init() {
         try {
@@ -80,19 +71,78 @@ public class SongDatabase {
                     secDB.put(null, key, data);
                 }
             }
-            key.setData(new String("alice").getBytes());
-            key.setSize(new String("alice").length());
-            secDB.get(null, key, data, LockMode.DEFAULT);
         } catch (Exception e) {
             e.getMessage();
         }
     }
     public static ArrayList<Entry> getEntry(String user) {
         ArrayList<Entry> returnEntries = new ArrayList<Entry>();
+        //ArrayList<Integer> entryKeys = new ArrayList<Integer>();
+        try {
+            DatabaseEntry key = new DatabaseEntry();
+            DatabaseEntry data = new DatabaseEntry();
+
+            key.setData(user.getBytes());
+            key.setSize(user.length());
+
+            secDB.get(null, key, data, LockMode.DEFAULT);
+            
+            String regex = "[0-9]+";
+
+            Pattern pattern = Pattern.compile(regex);
+
+            Matcher matcher = pattern.matcher(new String(data.getData()));
+
+            while (matcher.find()) {
+                returnEntries.add(getEntry(Integer.parseInt(matcher.group())));
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return returnEntries;
     }
-    public static Entry getEntry(int songID) {
+    //reconstructs from primDB a Entry object which corresponds to data
+    //contained in key songID
+    public static Entry getEntry(int id) {
+        //Declarations
         Entry returnEntry = new Entry();
+        try {
+            Integer idWrapped = new Integer(id);
+            returnEntry.songID = id;
+            ArrayList<String> user = new ArrayList<String>();
+            ArrayList<Integer> userRating = new ArrayList<Integer>();
+            
+            DatabaseEntry key = new DatabaseEntry();
+            DatabaseEntry data = new DatabaseEntry();
+
+            key.setData(idWrapped.toString().getBytes());
+            key.setSize(idWrapped.toString().length());
+
+            primDB.get(null, key, data, LockMode.DEFAULT);
+
+            String dataString = new String(data.getData());
+
+            //Parse with regexes
+            String userRegex = "[A-Za-z]+";
+            String ratingRegex = "[0-9]+";
+            
+            Pattern userPattern = Pattern.compile(userRegex);
+            Pattern ratingPattern = Pattern.compile(ratingRegex);
+
+            Matcher userMatcher = userPattern.matcher(dataString);
+            Matcher ratingMatcher = ratingPattern.matcher(dataString);
+
+            while (userMatcher.find()) {
+                user.add(userMatcher.group());
+            }
+            while (ratingMatcher.find()) {
+                userRating.add(Integer.parseInt(ratingMatcher.group()));
+            }
+            returnEntry.user = user;
+            returnEntry.rating = userRating;
+        } catch (Exception e) {
+            e.getMessage();
+        }
         return returnEntry;
     }
 }
