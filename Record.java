@@ -93,12 +93,7 @@ public class Record {
     }
     public static int numQuery() {return queries.size();}
     public static void populateDatabase() {
-      for (int i=0; i<record.size(); i++) {
-        for (int j=0; j<record.get(i).rat.size(); j++) {
-          List<String> sratings = new ArrayList<String>();
-          sratings.add(record.get(i).rat.get(j).toString());
-        }
-        SongDatabase.putRow(record.get(i).iden.toString(), record.get(i).us, sratings);
-      }
+      for (int i=0; i<record.size(); i++) 
+        SongDatabase.putRow(record.get(i).iden.toString(), record.get(i).us, record.get(i).rat);
     }
 }
