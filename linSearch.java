@@ -9,16 +9,16 @@ public class linSearch {
     double bids = 9999;
     double sids = 9999;
     double tids = 9999;
-    String id = "-1";
+    int id = "-1";
     
     for (int i=0; i<numQueries(); i++) {
       timer.startLinTimer();
       
-      id = Record.getQuery(i);
+      id = Integer.parseInt(Record.getQuery(i));
       Entry init = getEntry(id);
       
       for (Integer j=1; j<=Record.recordSize(); j++) {
-        Entry comp = getEntry(j.toString());
+        Entry comp = getEntry(j);
         double score = -1.0;
         if (init.id != comp.id) 
           score = compareEntry(init, comp);

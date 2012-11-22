@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class indexSearch {
   public static void indSearch() {
@@ -11,7 +12,7 @@ public class indexSearch {
     
     for (int i=0; i<Record.numQueries(); i++) {
       timer.startIndTimer();
-      String id = Record.getQuery(i);
+      int id = Integer.parseInt(Record.getQuery(i));
       List<String> IDs = new ArrayList<String>();
       
       Entry entry = SongDatabase.getEntry(id);
@@ -20,7 +21,7 @@ public class indexSearch {
       for (int j=0; j<entry.user.size(); j++) {
         aentry = SongDatabase.getEntry(entry.user.get(j));
         for (int k=0; k<aentry.size(); k++) {
-          if (!IDs.contains(aentry.get(k).id) && !aentry.get(k).id.equals(id))
+          if (!IDs.contains(aentry.get(k).id) && !aentry.get(k).id == id)
             IDs.add(aentry.get(k).id);
         }
       }
