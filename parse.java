@@ -47,13 +47,14 @@ public class parse {
     //  recordtest.testQ();
     //linSearch.linSearch();
     //Record record = new Record(1, new String(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>());
-    /*
-    long[] times = getTimeData();
+    linSearch.linSearch();
+    indexSearch.indSearch();
+    Long[] times = timer.getTimeData();
     System.out.println("The min linear time was " + times[0] + " the max was " + times[1] +
                        " The average was " + times[2]);
     System.out.println("The min index time was " + times[3] + " The max was " + times[4] +
                        " The average was " + times[5]);
-    */
+    
     sc.close();
     } catch (FileNotFoundException e) {
       System.err.print("FileNotFoundException: ");
