@@ -54,10 +54,20 @@ public class parse {
     //  recordtest.testQ();
     //linSearch.linSearch();
     //Record record = new Record(1, new String(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>());
+    Date sldate = new Date();
+    long sltime = sldate.getTime();
     linSearch.linSearch();
-    System.out.println("Linear search done. ");
+    Date eldate = new Date();
+    long eltime = eldate.getTime();
+    long tltime = eltime-sltime;
+    System.out.println("Linear search done. It took " + tltime + " ms");
+    Date sidate = new Date();
+    long sitime = sidate.getTime();
     indexSearch.indSearch();
-    System.out.println("Indexed search done. ");
+    Date eidate = new Date();
+    long eitime = eidate.getTime();
+    long titime = eitime-sitime;
+    System.out.println("Indexed search done. It took " + titime + " ms");
     Long[] times = timer.getTimeData();
     System.out.println("The min linear time was " + times[0] + " the max was " + times[1] +
                        " The average was " + times[2]);
