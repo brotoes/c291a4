@@ -20,6 +20,8 @@ public class parse {
     Record.initRecord(); 
     //System.out.println(input);
     System.out.println("Parsing... ");
+    Date date = new Date();
+    long starttime = date.getTime();
     for (int i=0; sc.hasNextLine(); i++) {
       Record.newRecord();
       input = sc.nextLine();
@@ -36,7 +38,11 @@ public class parse {
     }
     SongDatabase.init();
     Record.populateDatabase();
-    System.out.println("Done, database populated");
+    Date datee = new Date();
+    long endtime = datee.getTime();
+    //System.out.println(starttime + " " + endtime);
+    long totaltime = endtime-starttime;
+    System.out.println("Done, database populated, this took " + totaltime + " ms");
     //if (args.length == 2)
     //if (args[1].equals("-p"))
     //  recordtest.testDB();
