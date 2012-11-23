@@ -21,29 +21,16 @@ public class indexSearch {
         
         for (int j=0; j<entry.user.size(); j++) {
           aentry = SongDatabase.getEntry(entry.user.get(j));
-          System.out.println(aentry.get(j).songID);
           for (int k=0; k<aentry.size(); k++) {
-            boolean contain = false;
-            if (aentry.get(k).songID != id) {
-              contain = false;
-              for (int m=0; m<allEntries.size(); m++) {
-                for (int n=0; n<aentry.size(); n++) {
-                  if (allEntries.get(m).songID == aentry.get(n).songID) {
-                    contain = true;
-                  }
-                }
-              }
-              if (!contain)
-                allEntries.add(aentry.get(k));
-            }
+            if (aentry.get(k).songID != id)
+              allEntries.add(aentry.get(k));
           }
         }
+        allEntries = removeDuplicates(allEntries);
         
         for (int j=0; j<allEntries.size(); j++) {
           double score = -1.0;
-          //System.out.println(allEntries.get(j).songID);
           score = linSearch.compareEntry(entry, allEntries.get(j));
-          System.out.println(score);
           linSearch.IDs.add(allEntries.get(j).songID);
           linSearch.Scores.add(new Double(score));
         }
@@ -55,5 +42,19 @@ public class indexSearch {
     } catch (Exception e) {
       e.getMessage();
     }
+  }
+
+  private static ArrayList<Entry> removeDuplicates(ArrayList<Entry> allEntries) {
+    ArrayList<Integer> usedID = new ArrayList<Integer>();
+    ArrayList<Integer> allID = new ArrayList<Integer>();
+    ArrayList<Entry> output = new ArrayList<Entry>();
+    for (int i=0; i<allEntries.size(); i++) {
+      Integer ID = new Integer(allEntries.get(i).songID);
+      if (!usedID.contains(ID)) {
+        usedID.add(ID);
+        output.add(allEntries.get(i));
+      }
+    }
+    return output;
   }
 }

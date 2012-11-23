@@ -112,7 +112,7 @@ public class linSearch {
     }
     String output = new Integer(id).toString().concat(" ")
       .concat(bid.toString()).concat(" ").concat(sid.toString()).concat(" ").concat(tid.toString().concat("\n"));
-    System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
+    //System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
     
     try {
       writer.write(output);

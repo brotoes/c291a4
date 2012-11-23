@@ -63,12 +63,22 @@ public class timer {
     Long[] tdata = new Long[6];
     for (int i=0; i<lintimes.size(); i++) 
       sum = sum + lintimes.get(i);
-    tdata[2] = sum/lintimes.size();
+    if (indtimes.size() > 0) {
+      tdata[2] = sum/lintimes.size();
+    } else {
+      System.out.print("This input would lead to average time / 0, probably means there are no matches in the file");
+      tdata[2] = new Long(-1);
+    }
+    
     sum = 0;
     for (int i=0; i<indtimes.size(); i++)
       sum = sum + indtimes.get(i);
-    tdata[5] = sum/indtimes.size();
-    
+    if (indtimes.size() > 0) {
+      tdata[5] = sum/indtimes.size();
+    } else {
+      System.out.print("This input would lead to average time / 0, probably means there are no matches in the file");
+      tdata[5] = new Long(-1);
+    }
     tdata[0] = linmin;
     tdata[1] = linmax;
     tdata[3] = indmin;
