@@ -2,21 +2,18 @@ import java.util.*;
 import java.io.*;
 
 public class indexSearch {
+  //private static ArrayList<Integer> IDs = new ArrayList<Integer>();
+  //private static ArrayList<Double> Scores = new ArrayList<Double>();
+  
   public static void indSearch() {
-    int bid = 0;
-    int sid = 0;
-    int tid = 0;
-    double bids = 9999;
-    double sids = 9999;
-    double tids = 9999;
     
     for (int i=0; i<Record.numQuery(); i++) {
       timer.startIndTimer();
       int id = Integer.parseInt(Record.getQuery(i));
-      List<Entry> allEntries = new ArrayList<Entry>();
+      ArrayList<Entry> allEntries = new ArrayList<Entry>();
       
       Entry entry = SongDatabase.getEntry(id);
-      List<Entry> aentry = new ArrayList<Entry>();
+      ArrayList<Entry> aentry = new ArrayList<Entry>();
       
       for (int j=0; j<entry.user.size(); j++) {
         aentry = SongDatabase.getEntry(entry.user.get(j));
@@ -29,38 +26,13 @@ public class indexSearch {
       for (int j=0; j<allEntries.size(); j++) {
         double score = -1.0;
         score = linSearch.compareEntry(entry, allEntries.get(j));
-
-        int itemp, itemp1;
-        double dtemp, dtemp1;
-
-        if (score < bids) {
-          dtemp = bids;
-          itemp = bid;
-          bids = score;
-          bid = j;
-          if (dtemp < sids) {
-            dtemp1 = dtemp;
-            itemp1 = itemp;
-            sids = dtemp;
-            sid = itemp;
-            if (dtemp1 < tids) {
-              tids = dtemp1;
-              tid = itemp1;
-            }
-          }
-        }
-        timer.stopIndTimer();
-      }
-      System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
-      try {
-        FileWriter fwrite = new FileWriter("indexedanswers.txt");
-        BufferedWriter writer = new BufferedWriter(fwrite);
-        writer.write(id + " " + bid + " " + sid + " " + tid);
-      } catch (Exception e) {
-        e.getMessage();
+        linSearch.IDs.add(allEntries.get(j).songID);
+        linSearch.Scores.add(new Double(score));
       }
       
+      linSearch.getBest(id, "i");
+      timer.stopIndTimer();
     } //end query for
-    timer.stopIndTimer();
+    
   }
 }

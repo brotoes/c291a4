@@ -49,7 +49,9 @@ public class parse {
     //linSearch.linSearch();
     //Record record = new Record(1, new String(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Integer>());
     linSearch.linSearch();
+    System.out.println("Linear search done. ");
     indexSearch.indSearch();
+    System.out.println("Indexed search done. ");
     Long[] times = timer.getTimeData();
     System.out.println("The min linear time was " + times[0] + " the max was " + times[1] +
                        " The average was " + times[2]);

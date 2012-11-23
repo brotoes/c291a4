@@ -2,13 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class linSearch {
+  public static ArrayList<Integer> IDs = new ArrayList<Integer>();
+  public static ArrayList<Double> Scores = new ArrayList<Double>();
+  
   public static void linSearch() {
-    int bid = 0;
-    int sid = 0;
-    int tid = 0;
-    double bids = 9999;
-    double sids = 9999;
-    double tids = 9999;
+    
     int id = -1;
     
     for (int i=0; i<Record.numQuery(); i++) {
@@ -24,54 +22,114 @@ public class linSearch {
         double score = -1.0;
         if (init.songID != comp.songID) 
           score = compareEntry(init, comp);
-        int itemp, itemp1;
-        double dtemp, dtemp1;
-
-        if (score < bids) {
-          dtemp = bids;
-          itemp = bid;
-          bids = score;
-          bid = j;
-          if (dtemp < sids) {
-            dtemp1 = dtemp;
-            itemp1 = itemp;
-            sids = dtemp;
-            sid = itemp;
-            if (dtemp1 < tids) {
-              tids = dtemp1;
-              tid = itemp1;
-            }
-          }
-        }  
+        if (score >= 0) {
+          IDs.add(new Integer(j));
+          Scores.add(new Double(score));
+          System.out.println(j + " " + score);
+        }
+            //System.out.println(score);
+           
       }
-      System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
-      try {
-        FileWriter fwrite = new FileWriter("linearanswers.txt");
-        BufferedWriter writer = new BufferedWriter(fwrite);
-        writer.write(id + " " + bid + " " + sid + " " + tid);
-      } catch (Exception e) {
-        e.getMessage();
-      }
+      timer.stopLinTimer();
+      getBest(id, "l");
     }
+  
     
-    timer.stopLinTimer();
+    
   }
   
   public static double compareEntry(Entry entry1, Entry entry2) {
     int iresult = 0;
     double dresult = -1.0;
     int count = 0;
-    //System.out.println(entry1.user.get(0) + " " + entry2.user.get(0));
+    int indx = -1;
+    
     for (int i=0; i<entry1.user.size(); i++) {
-      int indx;
-      if ((indx = entry2.user.indexOf(entry1.user.get(i))) != -1) {
+      indx = -1;
+
+      for (int j = 0; j < entry2.user.size(); j ++) {
+        //System.out.println("users: " + entry1.user.get(i) + " " + entry2.user.get(j));
+        if (entry1.user.get(i).equals(entry2.user.get(j))) {
+          //System.out.println(entry1.user.get(i));
+          indx = j;
+          break;
+        }
+      }
+      if (indx != -1) {
         int a = entry1.rating.get(i) - entry2.rating.get(indx);
         iresult = iresult + a*a;
         count++;
+        
       }
     }
-    dresult = Math.sqrt(iresult);
-    dresult = dresult/count;
+    if (count > 0) {
+      dresult = Math.sqrt((double)iresult);
+      dresult = dresult/count;
+    }
     return dresult;
+  }
+
+  public static void getBest(int id, String type) {
+    Integer bid = new Integer(-1);
+    Integer sid = new Integer(-1);
+    Integer tid = new Integer(-1);
+    Double dmin = new Double(9999);
+    int indx = -1;
+    for (int i=0; i<Scores.size(); i++) {
+      if (Scores.get(i) < dmin) {
+        dmin = Scores.get(i);
+        bid = IDs.get(i);
+        indx = i;
+        //System.out.println(dmin);
+      }
+    }
+    dmin = new Double(9999);
+    Scores.remove(indx);
+    IDs.remove(indx);
+
+    for (int i=0; i<Scores.size(); i++) {
+      if (Scores.get(i) < dmin){
+        dmin = Scores.get(i);
+        sid = IDs.get(i);
+        indx = i;
+      }
+    }
+    dmin = new Double(9999);
+    Scores.remove(indx);
+    IDs.remove(indx);
+
+    for (int i=0; i<Scores.size(); i++) {
+      if (Scores.get(i) < dmin){
+        dmin = Scores.get(i);
+        tid = IDs.get(i);
+        indx = i;
+      }
+    }
+    String output = new Integer(id).toString().concat(" ")
+      .concat(bid.toString()).concat(" ").concat(sid.toString()).concat(" ").concat(tid.toString());
+    //System.out.println("The top similarities to " + id + " are " + bid + " " + sid + " " + tid);
+    if (type.equals("l")) {
+      try {
+        FileWriter fwrite = new FileWriter("linearanswers.txt");
+        BufferedWriter writer = new BufferedWriter(fwrite);
+        
+        writer.write(output);
+        writer.close();
+      } catch (Exception e) {
+        e.getMessage();
+      }
+    } else {
+      try {
+        FileWriter fwrite = new FileWriter("indexedanswers.txt");
+        BufferedWriter writer = new BufferedWriter(fwrite);
+        writer.write(output);
+        writer.close();
+      } catch (Exception e) {
+        e.getMessage();
+      }
+      
+    }
+    IDs.clear();
+    Scores.clear();
   }
 }
